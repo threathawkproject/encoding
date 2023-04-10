@@ -1,6 +1,7 @@
-from models import SDO, IndicatorDTO, IndicatorType
+from models import SRO, SDO, SDOType, IndicatorDTO, IndicatorType, MalwareDTO, AttackPatternDTO, LocationDTO 
 from stix2 import HashConstant
-from stix2 import Indicator, ObjectPath, ObservationExpression, EqualityComparisonExpression
+from stix2 import Relationship, Indicator, Malware, AttackPattern, Location 
+from stix2 import ObjectPath, ObservationExpression, EqualityComparisonExpression
 
 def make_indicator(indicator_data: IndicatorDTO):
     ioc = indicator_data.value
@@ -36,10 +37,54 @@ def make_indicator(indicator_data: IndicatorDTO):
         pattern_type="stix",
         pattern=pattern
     )
-    return indicator
+    return indicator.serialize()
 
-def convert(sdo: SDO):
-    indicator_type = sdo.type
-    if indicator_type == "indicator":
+def make_malware(malware_data: MalwareDTO):
+    malware = Malware(
+        name=malware_data.value,
+        is_family=malware_data.is_family
+    )
+    return malware.serialize() 
+
+def make_attack_pattern(attack_data: AttackPatternDTO):
+    ttp = AttackPattern(
+        name=attack_data.name,
+        description=attack_data.description,
+        external_references=attack_data.external_references,
+    )
+
+    return ttp.serialize() 
+
+
+def make_location(location_data: LocationDTO):
+    location = Location(
+        name=location_data.name,
+        country=location_data.country,
+        latitude=location_data.latitude,
+        longitude=location_data.longitude
+    )
+    return location.serialize() 
+
+
+
+def generate_sdo(sdo: SDO):
+    type = sdo.type
+    if type == "indicator":
         print(f"Making an indicator with the given data {sdo.data}")
         return make_indicator(sdo.data)
+    if type == "malware":
+        print(f"Making an malware with the given data {sdo.data}")
+        return make_indicator(sdo.data)
+    if type == "attack-pattern":
+        return make_attack_pattern(sdo.data)
+    if type == "location":
+        return make_location(sdo.data)
+        
+
+def generate_sro(sro: SRO):
+    relationship = Relationship(
+        source_ref=sro.source,
+        target_ref=sro.target,
+        relationship_type=sro.rel_type
+    )
+    return relationship.serialize()
