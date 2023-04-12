@@ -1,6 +1,6 @@
-from models import SRO, SDO, SDOType, IndicatorDTO, IndicatorType, MalwareDTO, AttackPatternDTO, LocationDTO 
+from models import SCO, SRO, SDO, SDOType, IndicatorDTO, IndicatorType, MalwareDTO, AttackPatternDTO, LocationDTO, DomainNameDTO
 from stix2 import HashConstant
-from stix2 import Relationship, Indicator, Malware, AttackPattern, Location 
+from stix2 import Relationship, Indicator, Malware, AttackPattern, Location, DomainName
 from stix2 import ObjectPath, ObservationExpression, EqualityComparisonExpression
 
 def make_indicator(indicator_data: IndicatorDTO):
@@ -65,7 +65,11 @@ def make_location(location_data: LocationDTO):
     )
     return location.serialize() 
 
-
+def make_domain_name(domain_name_data: DomainNameDTO):
+    domain_name = DomainName(
+        name=domain_name_data.value
+    )
+    return domain_name.serialize()
 
 def generate_sdo(sdo: SDO):
     type = sdo.type
@@ -80,6 +84,12 @@ def generate_sdo(sdo: SDO):
     if type == "location":
         return make_location(sdo.data)
         
+def generate_sco(sco: SCO):
+    type = sco.type
+    if type == "domain-name":
+        domain_name_dto = sco.data
+        return make_domain_name(domain_name_dto)
+
 
 def generate_sro(sro: SRO):
     relationship = Relationship(

@@ -35,6 +35,15 @@ class LocationDTO(BaseModel):
     latitude: float
     longitude: float
 
+
+class DomainNameDTO(BaseModel):
+    name: str
+
+
+class SCO(BaseModel):
+    type: str
+    data: DomainNameDTO | None
+
 class SRO(BaseModel):
     source: str
     target: str

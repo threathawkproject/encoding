@@ -4,3 +4,4 @@
 pyvenv.cfg
 /src/__pycache__
 *.http
+/src/test.py

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from models import SDO, SRO
+from models import SDO, SRO, SCO
 import utils
 
 app = FastAPI()
@@ -20,7 +20,11 @@ app.add_middleware(
 async def convert(sdo: SDO):
     return utils.generate_sdo(sdo)
 
-
 @app.post("/generate_sro")
 async def generate_sro(sro: SRO):
     return utils.generate_sro(sro)
+
+@app.post("/generate_sco")
+async def generate_sco(sco: SCO):
+    return utils.generate_sco(sco)
+
