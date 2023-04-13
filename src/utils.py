@@ -3,6 +3,7 @@ from stix2 import HashConstant
 from stix2 import Relationship, Indicator, Malware, AttackPattern, Location, DomainName
 from stix2 import ObjectPath, ObservationExpression, EqualityComparisonExpression
 
+
 def make_indicator(indicator_data: IndicatorDTO):
     ioc = indicator_data.value
     indicator_type = indicator_data.type
@@ -39,12 +40,14 @@ def make_indicator(indicator_data: IndicatorDTO):
     )
     return indicator.serialize()
 
+
 def make_malware(malware_data: MalwareDTO):
     malware = Malware(
         name=malware_data.value,
         is_family=malware_data.is_family
     )
-    return malware.serialize() 
+    return malware.serialize()
+
 
 def make_attack_pattern(attack_data: AttackPatternDTO):
     ttp = AttackPattern(
@@ -53,7 +56,7 @@ def make_attack_pattern(attack_data: AttackPatternDTO):
         external_references=attack_data.external_references,
     )
 
-    return ttp.serialize() 
+    return ttp.serialize()
 
 
 def make_location(location_data: LocationDTO):
@@ -63,13 +66,21 @@ def make_location(location_data: LocationDTO):
         latitude=location_data.latitude,
         longitude=location_data.longitude
     )
-    return location.serialize() 
+    return location.serialize()
+
 
 def make_domain_name(domain_name_data: DomainNameDTO):
     domain_name = DomainName(
-        name=domain_name_data.value
+        name=domain_name_data.name,
+        value=domain_name_data.name,
+        extensions={
+            "extension-definition--dd73de4f-a7f3-49ea-8ec1-8e884196b7a8": {
+                'extension_type': 'toplevel-property-extension',
+            },
+        }
     )
     return domain_name.serialize()
+
 
 def generate_sdo(sdo: SDO):
     type = sdo.type
@@ -83,7 +94,8 @@ def generate_sdo(sdo: SDO):
         return make_attack_pattern(sdo.data)
     if type == "location":
         return make_location(sdo.data)
-        
+
+
 def generate_sco(sco: SCO):
     type = sco.type
     if type == "domain-name":
