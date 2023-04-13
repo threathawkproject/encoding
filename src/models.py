@@ -3,8 +3,7 @@ from pydantic import BaseModel
 from enum import Enum
 
 class IndicatorType(Enum):
-    IPv4 = 'ipv4'
-    IPv6 = 'ipv6'
+    IP = 'ip'
     Email = 'email'
     URL = 'url'
     MD5 = 'md5'

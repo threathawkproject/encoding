@@ -8,15 +8,9 @@ def make_indicator(indicator_data: IndicatorDTO):
     ioc = indicator_data.value
     indicator_type = indicator_data.type
     pattern = None
-    if indicator_type is IndicatorType.IPv4:
+    if indicator_type is IndicatorType.IP:
         expression = EqualityComparisonExpression(
-            ObjectPath("ipv4-addr", ["value"]),
-            ioc
-        )
-        pattern = ObservationExpression(expression)
-    elif indicator_type is IndicatorType.IPv6:
-        expression = EqualityComparisonExpression(
-            ObjectPath("ipv6-addr", ["value"]),
+            ObjectPath("ip-addr", ["value"]),
             ioc
         )
         pattern = ObservationExpression(expression)
@@ -36,7 +30,13 @@ def make_indicator(indicator_data: IndicatorDTO):
     indicator = Indicator(
         name=ioc,
         pattern_type="stix",
-        pattern=pattern
+        pattern=pattern,
+        node_type=indicator_type.value,
+        extensions={
+            "extension-definition--dd73de4f-a7f3-49ea-8ec1-8e884196b7a8": {
+                'extension_type': 'toplevel-property-extension',
+            },
+        }
     )
     return indicator.serialize()
 
