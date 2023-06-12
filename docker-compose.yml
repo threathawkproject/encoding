@@ -1,0 +1,16 @@
+version: '3'
+services:
+  encoding:
+    build: .
+    container_name: threat-hawk-encoding
+    restart: always
+    ports:
+      - "8001:8000"
+    networks:
+      - threat_hawk_network
+
+
+# defined my own network here where the db n this is connected
+networks:
+  threat_hawk_network:
+    external: true
