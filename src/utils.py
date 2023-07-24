@@ -3,11 +3,8 @@ from stix2 import HashConstant
 from stix2 import Relationship, Indicator, Malware, AttackPattern, Location, DomainName
 from stix2 import ObjectPath, ObservationExpression, EqualityComparisonExpression
 
-import json
 
-def make_json(stix_obj_json_str):
-    print("Serializing..")
-    return json.loads(stix_obj_json_str)
+
 
 def make_indicator(indicator_data: IndicatorDTO):
     ioc = indicator_data.value
@@ -43,8 +40,7 @@ def make_indicator(indicator_data: IndicatorDTO):
             },
         }
     )
-    indicator_json_str = indicator.serialize()
-    return make_json(indicator_json_str)
+    return indicator.serialize()
 
 
 def make_malware(malware_data: MalwareDTO):
@@ -62,9 +58,7 @@ def make_attack_pattern(attack_data: AttackPatternDTO):
         external_references=attack_data.external_references,
     )
 
-    ttp_json_str = ttp.serialize()
-
-    return make_json(ttp_json_str)
+    return ttp.serialize()
 
 
 
@@ -75,8 +69,7 @@ def make_location(location_data: LocationDTO):
         latitude=location_data.latitude,
         longitude=location_data.longitude
     )
-    location_json_str = location.serialize()
-    return make_json(location_json_str)
+    return location.serialize()
 
 
 def make_domain_name(domain_name_data: DomainNameDTO):
@@ -89,8 +82,7 @@ def make_domain_name(domain_name_data: DomainNameDTO):
             },
         }
     )
-    domain_name_json_str = domain_name.serialize()
-    return make_json(domain_name_json_str)
+    return domain_name.serialize()
 
 
 def generate_sdo(sdo: SDO):
