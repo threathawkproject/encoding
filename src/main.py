@@ -15,6 +15,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+async def root():
+    return {"message": "ThreatHawk Encoding is Running!"}
+
 
 @app.post("/generate_sdo")
 async def convert(sdo: SDO):
